@@ -24,7 +24,7 @@ genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
 
 while(True):
-    pergunta = input("> ")
+    pergunta = input("\n> ")
     if (pergunta.lower() != "bye"):
         response = model.generate_content(pergunta)
         print(response.text)
