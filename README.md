@@ -1,2 +1,3 @@
 # InteligenciaArtificial
-Grupo de Estudos de IA
+
+Para estudos de Inteligência Artificial
