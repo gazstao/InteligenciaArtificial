@@ -159,8 +159,8 @@
         function convertText(text) {
             // Converter quebras de linha em <br>
             let htmlText = text.replace(/\n/g, "<br>")
-                            .replace("* **","<b>")
-                            .replace("**","</b>"); 
+                            .replace(/\*\s\*\*/g, "<b>")
+                            .replace(/\*\*/g, "</b>"); 
             return htmlText;
         }
     </script>
