@@ -1,22 +1,27 @@
-# InteligenciaArtificial
+Aqui está uma versão mais visual e interessante da sua descrição, com emojis para destacar os pontos:
 
-Repositório para estudos de Inteligência Artificial
+# 🤖 InteligenciaArtificial
 
-- Olmail para fazer perguntas para IA localmente e enviar para um email.
-- Alguns exemplos usando API do Google Gemini.
-- WebChat para usar um chat via web com o Ollama localmente.
-- youtubeResume para extrair conteúdo de vídeos do youtube
+**Repositório para estudos de Inteligência Artificial**
 
-Necessário ter o Ollama instalado e rodando.
-Para servidor web pode-se usar WAMP, LAMP, docker... 
+- ✉️ **Olmail**: Ferramenta para fazer perguntas para IA localmente e enviar para um email.
+- 🌐 **Google Gemini API**: Exemplos de como utilizar a API do Google Gemini.
+- 💬 **WebChat**: Chat via web com o Ollama rodando localmente.
+- 🎥 **youtubeResume**: Extrair o conteúdo de vídeos do YouTube automaticamente.
 
-aberto a quem interessar! =)
+⚙️ **Requisitos**:
+- Ter o **Ollama** instalado e rodando.
+- Para o servidor web, você pode usar **WAMP**, **LAMP**, **Docker**, entre outros.
 
-## Contribuições
+👥 **Aberto a todos que tiverem interesse!**
 
-Ficamos felizes em receber contribuições! Siga os passos abaixo para contribuir:
+---
 
-1. Faça um fork do repositório.
-2. Crie um branch ("git checkout -b feature/sua-funcionalidade").
-3. Faça commit das suas alterações ('git commit -m "Adicionei uma nova funcionalidade"').
-4. Envie um pull request.
+## 🤝 Contribuições
+
+Estamos felizes em receber contribuições! Siga os passos abaixo para contribuir:
+
+1. 🍴 Faça um **fork** do repositório.
+2. 🌿 Crie um **branch**: `git checkout -b feature/sua-funcionalidade`.
+3. 💾 Faça **commit** das suas alterações: `git commit -m "Adicionei uma nova funcionalidade"`.
+4. 🔄 Envie um **pull request**.
