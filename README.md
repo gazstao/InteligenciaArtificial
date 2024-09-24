@@ -17,6 +17,6 @@ aberto a quem interessar! =)
 Ficamos felizes em receber contribuições! Siga os passos abaixo para contribuir:
 
 1. Faça um fork do repositório.
-2. Crie um branch (`git checkout -b feature/sua-funcionalidade`).
-3. Faça commit das suas alterações (`git commit -m 'Adicionei uma nova funcionalidade'`).
+2. Crie um branch ("git checkout -b feature/sua-funcionalidade").
+3. Faça commit das suas alterações ('git commit -m "Adicionei uma nova funcionalidade"').
 4. Envie um pull request.
