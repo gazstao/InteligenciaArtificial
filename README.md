@@ -1,5 +1,3 @@
-Aqui está uma versão mais visual e interessante da sua descrição, com emojis para destacar os pontos:
-
 # 🤖 InteligenciaArtificial
 
 **Repositório para estudos de Inteligência Artificial**
