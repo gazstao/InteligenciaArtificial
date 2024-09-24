@@ -13,10 +13,10 @@ Este é um projeto web simples, porém poderosa, que permite interagir com o Oll
 
 1. **Clone o Repositório**:
    ```bash
-   git clone https://github.com/gazstao/ChatWithOllama
+   git clone https://github.com/gazstao/InteligenciaArtificial
    ```
 
-2. **Instale um servidor Web Apache ou WAMP em sua máquina** e copie os arquivos do repositório para o diretório www
+2. **Instale um servidor Web Apache ou WAMP em sua máquina** e copie os arquivos do WebChat para o diretório www
 
 3. **Abra a página `http://localhost/` no seu navegador** para começar a conversar com o Ollama!
 
