@@ -1,0 +1,103 @@
+body {
+    background-color: #222;
+    color: #568ea6;   
+    margin: auto;
+    text-align: center;
+    border-radius: 7px;
+    align-items: center;
+}
+
+p {
+    color: #bcd;   
+    margin: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word; 
+}
+
+
+pre {
+    color: #abc;
+    white-space: pre-wrap;
+    word-wrap: break-word; 
+    border-radius: 7px;
+}
+
+.askalot {
+    background-color: #222;
+    color: #bcd;   
+    margin-top: 20px;
+    border-radius: 7px;
+    padding: 5px;
+    border: 2px solid #bcd;
+    align-items: left;
+}
+
+.askalotModelList {
+    align-items: left;
+    text-align: left;
+    padding: 0px;
+    margin: 0px;
+}
+
+
+.b2{
+    border:#568ea6 2px solid;
+}
+
+.bordered{
+    border: 2px solid #568ea6;
+    border-radius: 7px;
+    color:#bcd;
+    padding: 10px;
+    margin: 30px;
+    display: none;
+}
+
+.centrada{
+    align-items: center;
+    margin: auto;
+}
+
+
+.color0 {
+    background-color: #222;
+    color: #568ea6;   
+    border-radius: 7px;
+    padding: 5px;
+    border: 2px solid #568ea6;
+}
+
+
+.color1 {
+    background-color: #222;
+    color: #bcd;   
+    margin-top: 20px;
+    border-radius: 7px;
+    padding: 5px;
+    border: 2px solid #bcd;
+}
+
+
+.data {
+    border: #bcd solid 2px;
+    align-items: center;
+    border-radius: 5px;
+    background-color: #000;
+    color: #bcd;
+    margin: auto;
+    padding-top: 8px;
+    font-size: small;
+}
+
+
+.data:hover .detalhes {
+    display: block;
+}
+
+.margin-top{
+    margin-top: 5%;
+}
+
+.resposta {
+    margin: 20px;
+}
