@@ -1,6 +1,9 @@
 import requests
+import ollama
 from youtube_transcript_api import YouTubeTranscriptApi
+import re
 
+ollama.list()
 # Função para extrair a transcrição do YouTube
 def get_transcript(video_id, language='pt'):
     try:
@@ -13,25 +16,22 @@ def get_transcript(video_id, language='pt'):
 
 # Função para obter um resumo usando o Ollama API
 def summarize_with_ollama(text):
-    url = "http://localhost:11434/api/generate"  # Endpoint padrão do Ollama
-    model = "phi3.5:latest"  # Ajuste o modelo, se necessário
 
-    headers = {
-        "Content-Type": "application/json"
-    }
-
-    data = {
-        "model": model,
-        "prompt": f"Faça um resumo conciso do seguinte texto: {text}"
-    }
+    modelo = "llama3.1:latest"  # Ajuste o modelo, se necessário
+    prompt = "Faça um resumo conciso do seguinte texto: "+text
 
     try:
-        response = requests.post(url, headers=headers, json=data)
-        response.raise_for_status()
-        summary = response.json().get('response', '')
-        return summary
-    except requests.exceptions.RequestException as e:
-        print(f"Erro ao se comunicar com a API do Ollama: {e}")
+        saida = ollama.chat(
+            model=modelo, 
+            messages=[{'role':'user','content': prompt}]
+            )
+
+        print(saida)
+        with open("resumos.txt","a") as arquivo:
+            arquivo.write(saida['message']['content'])
+            arquivo.write("\n\n\n\n----------------------------------------\n\n\n\n")
+    except Exception as e:
+        print(f"Erro: {e}")
         return None
 
 # Função principal
@@ -44,10 +44,10 @@ def main():
     # Obter a transcrição
     transcript = get_transcript(video_id)
     if transcript:
-        print("Transcrição obtida com sucesso.")
+        print("Transcrição obtida com sucesso...\nAnalisando o resultado. Aguarde...")
         
         # Enviar a transcrição para o Ollama e obter o resumo
-        summary = summarize_with_ollama(transcript)
+        summary = summarize_with_ollama(filtrar_string(transcript))
         if summary:
             print("\nResumo gerado:")
             print(summary)
@@ -55,6 +55,11 @@ def main():
             print("Falha ao gerar o resumo.")
     else:
         print("Não foi possível obter a transcrição.")
+
+def filtrar_string(texto):
+    # Remove caracteres que não são letras, números ou espaços
+    texto_filtrado = re.sub(r'[^\w\s]', '', texto)
+    return texto_filtrado
 
 if __name__ == "__main__":
     main()
