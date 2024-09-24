@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackGPT</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="shortcut icon" href="love.png">
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="container color0 margin-top">
+            <h1>HackGPT</span></h1>
+        </div>
+        <form id="ollamaRequest">
+        <div class="container color1">
+            <div style="margin:30px;">
+                <textarea rows="5" cols="30" class="form-control" id="prompt" name="prompt" required"></textarea>
+            </div>
+            <div class="container row margin-top"  style="margin:30px;">
+                <div class="col-6">
+                </div>
+                <div id="select-container" class="col-2 centrada">
+                </div>
+                <button type="submit" id="submitButton" class="btn btn-primary centrada col-2" style="margin-top: 0px;">Perguntar</button>
+            </div>
+        </div>
+        </form>
+    </div>
+
+    <div class="container">
+        <div id="pergunta" class="alert alert-success bordered" style="color: #222;">
+        </div>
+        <div class="bordered" id="respC2" style="text-align: justify; padding: 20px;"><p id="responseText"></p>
+        </div>        
+    
+        <div style="display: none;" id="responseContainer" class="container">
+            <div class="row align-items-center data b2">
+                <div class="col-3">Model<pre id="responseModel"  class="alert alert-success"></pre></div>
+                <div class="col-3">Prompt Eval Count<pre id="responsePromptEvalCount" class="alert alert-success"></pre></div>
+                <div class="col-3">Eval Count<pre id="responseEvalCount" class="alert alert-success"></pre></div>
+                <div class="col-3">TimeStamp<pre id="responseCreatedAt" class="alert alert-success"></pre></div>                
+                <div class="col-3">Load Duration<pre id="responseLoadDuration" class="alert alert-success"></pre></div>
+                <div class="col-3">Prompt Eval Duration<pre id="responsePromptEvalDuration" class="alert alert-success"></pre></div>
+                <div class="col-3">Eval Duration<pre id="responseEvalDuration" class="alert alert-success"></pre></div>
+                <div class="col-3">Total Duration<pre id="responseTotalDuration" class="alert alert-success"></pre></div>
+                <div class="col-3">System by<pre class="alert alert-success">Gazstao</pre></div>
+                <div class="col-3">Done Reason<pre id="responseDoneReason" class="alert alert-success"></pre></div>
+                <div class="col-3">Done<pre id="responseDone" class="alert alert-success"></pre></div>
+                <div class="col-3" style="font-size: small; padding: 7px;">&#169; GazsTao AztechLabs</div>
+            </div>
+        </div>        
+        <br>
+
+        <div class="container row">
+            <a href="#" class="col-3"><div class="askalot">HackGPT</div></a>
+            <a href="models.php" class="col-3"><div class="askalot">Lista Modelos</div></a>
+            <a href="askMultiple.html" class="col-3"><div class="askalot">AskALot</div></a>
+            <a href="https://github.com/gazstao/HackGPT" class="col-3" target="_blank"><div class="askalot">Sobre</div></a></div>
+    </div>
+
+    
+
+    <script src="./scripts/ollamaRequest.js"></script>
+    <script src="./scripts/loadModels.js"></script>
+    <!-- Bootstrap JS e dependencias -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

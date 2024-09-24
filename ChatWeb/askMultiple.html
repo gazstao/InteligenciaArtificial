@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AskALot</title>
+
+    <!-- Bootstrap, css e favicon -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="shortcut icon" href="imagens/pirate.png">
+</head>
+
+<body>
+
+    <!-- Esqueleto HTML -->
+    <div class="container askalot">
+        <h1>AskALot</h1>
+        <div id="models" class="models-list askalotModelList row"></div>
+        <br>
+        <textarea id="prompt" rows="4" cols="50" placeholder="Digite sua pergunta..."></textarea><br>
+        <button onclick="askModels()" id="submitButton">Enviar Pergunta</button>
+        <div id="response" class="response"></div>
+    </div>
+
+    <script>
+
+        // Função para carregar os modelos da API
+        async function loadModels() {
+            try {
+                const response = await fetch('http://localhost:11434/api/tags');
+                const data = await response.json();
+
+                const modelsContainer = document.getElementById('models');
+                modelsContainer.innerHTML = '';
+                
+                const mainDiv = document.createElement('div');
+                mainDiv.className = 'container b2 row';
+
+                // cria os checkbox
+                data.models.forEach(model => {
+
+                    const modelDiv = document.createElement('div');
+                    modelDiv.className = 'col-3 col-md-4 col-sm-6';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = model.name;
+                    checkbox.value = model.name;
+
+                    const label = document.createElement('label');
+                    label.htmlFor = model.name;
+                    label.textContent = model.name;
+
+                    modelDiv.appendChild(checkbox);
+                    modelDiv.appendChild(label);
+
+                    mainDiv.appendChild(modelDiv);
+
+                });
+
+                modelsContainer.appendChild(mainDiv);
+
+            } catch (error) {
+                console.error('Erro ao carregar modelos:', error);
+            }
+        }
+
+        // Função para enviar a pergunta aos modelos selecionados
+        async function askModels() {
+
+            // Desabilita o botão de pergunta
+            var button = document.getElementById('submitButton');
+            button.disabled = true;
+            button.innerText = 'Aguarde a resposta por favor...';
+
+            const selectedModels = Array.from(document.querySelectorAll('#models input[type="checkbox"]:checked'))
+                .map(checkbox => checkbox.value);
+
+            const prompt = document.getElementById('prompt').value;
+
+            const responsesContainer = document.getElementById('response');
+            responsesContainer.innerHTML = ''; // Limpa respostas anteriores
+
+            if (selectedModels.length === 0) {
+                alert('Por favor, selecione pelo menos um modelo.');
+                return;
+            }
+                
+            try {
+                const promises = selectedModels.map(async model => {
+
+                    // https://github.com/ollama/ollama/blob/main/docs/api.md
+                    const json = {
+                        'model': model,
+                        'prompt': prompt,
+                        'stream': false
+                    };
+
+                    console.log("Asking: "+ JSON.stringify(json));
+
+                    const response = await fetch('http://localhost:11434/api/generate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify( json )
+                    });
+
+                    const data = await response.json();
+                    return { model, response : data.response};
+                });
+
+                const responses = await Promise.all(promises);
+
+                responses.forEach(({ model, response }) => {
+                    const div = document.createElement('div');
+                    div.className = "resposta";
+                    const p = document.createElement('p');
+                    const pre = document.createElement('pre');
+                    p.textContent = `${model}`;
+                    pre.innerHTML =  convertText(`${response}`);
+                    div.appendChild(p);
+                    div.appendChild(pre);
+                    responsesContainer.appendChild(div);
+                });
+            } catch (error) {
+                console.error('Erro ao enviar pergunta:', error);
+            } finally {
+                        // Reabilita o botao apos a resposta
+                    button.disabled = false;
+                    button.innerText = 'Perguntar';
+            }
+        }
+
+        function convertText(text) {
+            // Converter quebras de linha em <br>
+            let htmlText = text.replace(/\n/g, "<br>")
+                            .replace(/\*\s\*\*/g, "<b>")
+                            .replace(/\*\*/g, "</b>"); 
+            return htmlText;
+        }
+
+        // Carregar os modelos ao carregar a página
+        window.onload = loadModels;
+    </script>
+<div class="container"><div class="container row">
+    <a href="index.html" class="col-3"><div class="askalot">HackGPT</div></a>
+    <a href="models.php" class="col-3"><div class="askalot">Lista Modelos</div></a>
+    <a href="#" class="col-3"><div class="askalot">AskALot</div></a>
+    <a href="https://github.com/gazstao/HackGPT" class="col-3" target="_blank"><div class="askalot">Sobre</div></a>
+</div></div>
+
+        <!-- Bootstrap JS e dependencias -->
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
