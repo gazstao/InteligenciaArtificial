@@ -1,23 +1,21 @@
-import json
-import ollama
-from youtube_transcript_api import YouTubeTranscriptApi
-import re
-import webbrowser
-import os
+import json         # biblioteca para lidar com o Jason Sexta 13
+import ollama      # biblioteca para lidar com a API da OLLAMA
+from youtube_transcript_api import YouTubeTranscriptApi       # biblioteca para lidar com a API da Youtube
+import re           # biblioteca para lidar com expressoes regulares
+import webbrowser     # biblioteca para abrir um site
+import os           # biblioteca para lidar com arquivos
 
 
 # Ajuste o modelo, se necessário
-modelo = "phi3.5:latest"  
-prompt = "Respire fundo, e faça um esquema organizado e detalhado do seguinte texto, pontuando os itens principais e descrevendo o mais detalhadamente possivel seu conteudo: "
-idioma = 'pt'
+modelo = "phi3.5:latest"              # modelo da OLLAMA a ser utilizado
+# o prompt é capaz de mudar completamente o estilo e a resposta
+prompt = "Você está assistindo a um vídeo no youtube. Respire fundo, e faça um esquema organizado e detalhado do seguinte texto, pontuando os itens principais e descrevendo o mais detalhadamente possivel seu conteudo: "
+idioma = ['pt','en']
 
-
-# Função para extrair a transcrição do YouTube
-def get_transcript(video_id, language=idioma):
-
+# Obtem a transcrição do video escolhido na linguagem pre-definida, une o texto fragmentado e retorna o resultado
+def get_transcript(video_id):
     try:
-        # Obtem a transcrição do video escolhido na linguagem pre-definida, une o texto fragmentado e retorna o resultado
-        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[language])
+        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=idioma)
         transcript_text = " ".join([entry['text'] for entry in transcript])
         return transcript_text
     except Exception as e:
@@ -25,9 +23,8 @@ def get_transcript(video_id, language=idioma):
         return None
 
 
-# Função para obter um resumo usando o Ollama
-def summarize_with_ollama(text, arquivoID):
-
+# Obtem um texto e um ID de arquivo para gravar o resultado, e cria um resumo usando o Ollama
+def summarize_with_ollama(text, arquivoID): 
     try:
         saida = ollama.chat(model=modelo, messages=[{'role':'user','content': prompt+text}])
         json_bonito_saida = json.dumps(saida,indent=4)
@@ -37,15 +34,16 @@ def summarize_with_ollama(text, arquivoID):
             arquivo.write(saida['message']['content'])
             arquivo.write("\n\n----------------------------------------\n\n")
         return(saida['message']['content'])
+
     except Exception as e:
         print(f"Erro: {e}")
         return None
 
 
-# Função principal
+# Função principal: solicita a URL do video, obtém a transcrição e cria um arquivo html para visualização 
 def main():
-    video_url = input("Insira o URL do vídeo do YouTube: ")
-    video_id = video_url.split("v=")[-1]
+    url = input("Insira o URL do vídeo do YouTube: ")
+    video_id = url.split("v=")[-1]
 
     transcript = get_transcript(video_id)
 
@@ -59,7 +57,7 @@ def main():
         if summary:
             print("\nResumo gerado: ")
             print(summary)
-            criaHtml(summary, video_id)
+            criaHtml(summary, video_id, url)
         else:
             print("Falha ao gerar o resumo.")
 
@@ -69,41 +67,42 @@ def main():
 
 
 def filtrar_string(texto):
-    # Remove caracteres que não são letras, números ou espaços
     texto_filtrado = re.sub(r'[^\w\s]', '', texto)
     return texto_filtrado
 
 
-def criaHtml(texto, video_id):
+def criaHtml(texto, video_id, url):
     conteudo_html = f"""
     <!DOCTYPE html>
     <html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>GazsTao YouTube Resumer</title>
+        <title>YouTube Resumer</title>
         <style>
             body {{
                 font-family: Arial, sans-serif;
                 margin: 20px;
-                background-color: #f4f4f4;
+                background-color: #222;
+                color: #cde
             }}
 
         pre {{
             padding: 15px;
             text-align: justify;
             color: #abc;
-            background-color: #333;
+            background-color: #222;
             border: 2px solid #568ea6;
             margin: auto;
             white-space: pre-wrap;
             word-wrap: break-word; 
             border-radius: 7px;
+            font-size: 16px;
         }}   
         </style>
     </head>
     <body>
-        <h1>GazsTao YouTube Resumer - {video_id}</h1>
+        <h1>YouTube Resumer - <a href="{url}">{url}</a></h1>
         <pre>{texto}</pre>
     </body>
     </html>
