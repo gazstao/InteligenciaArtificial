@@ -1,4 +1,8 @@
-google-generativeai
 pillow
 requests
 youtube_transcript_api
+json
+ollama
+re
+webbrowser
+os
