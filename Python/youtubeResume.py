@@ -13,10 +13,7 @@ idioma = 'pt'
 
 
 # Função para extrair a transcrição do YouTube
-def get_transcript(video_url, language=idioma):
-
-    # Obtem somente o ID do video
-    video_id = video_url.split("v=")[-1]
+def get_transcript(video_id, language=idioma):
 
     try:
         # Obtem a transcrição do video escolhido na linguagem pre-definida, une o texto fragmentado e retorna o resultado
@@ -44,22 +41,28 @@ def summarize_with_ollama(text, arquivoID):
         print(f"Erro: {e}")
         return None
 
+
 # Função principal
 def main():
     video_url = input("Insira o URL do vídeo do YouTube: ")
-    transcript = get_transcript(video_url)
+    video_id = video_url.split("v=")[-1]
+
+    transcript = get_transcript(video_id)
 
     if transcript:
         print("Transcrição obtida com sucesso...\nAnalisando o resultado. Aguarde...")
         
         # Enviar a transcrição para o Ollama e obter o resumo
-        summary = summarize_with_ollama(filtrar_string(transcript),video_url)
+        summary = summarize_with_ollama(filtrar_string(transcript),video_id)
+
+       # Criar um arquivo HTML com o resumo
         if summary:
             print("\nResumo gerado: ")
             print(summary)
-            criaHtml(summary, video_url.split("v=")[-1])
+            criaHtml(summary, video_id)
         else:
             print("Falha ao gerar o resumo.")
+
     else:
         print("Não foi possível obter a transcrição.")
     
@@ -106,7 +109,8 @@ def criaHtml(texto, video_id):
     """
 
     # Nome do arquivo HTML
-    arquivo_html = '\\data\\'+video_id+'.html'
+    arquivo_html = './data/'+video_id+'.html'
+    print (f"Iniciando criacao do arquivo {arquivo_html}")
 
     # Salvando o arquivo HTML
     with open(arquivo_html, 'w', encoding='utf-8') as f:
