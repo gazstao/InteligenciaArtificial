@@ -93,6 +93,7 @@ def criaHtml(texto, video_id):
             padding: 15px;
             text-align: justify;
             color: #abc;
+            background-color: #333;
             border: 2px solid #568ea6;
             margin: auto;
             white-space: pre-wrap;
