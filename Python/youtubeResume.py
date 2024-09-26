@@ -8,7 +8,7 @@ import os
 
 # Ajuste o modelo, se necessário
 modelo = "phi3.5:latest"  
-prompt = "Faça um resumo do seguinte texto, pontuando os itens principais e descrevendo o mais detalhadamente possivel seu conteudo: "
+prompt = "Respire fundo, e faça um esquema organizado e detalhado do seguinte texto, pontuando os itens principais e descrevendo o mais detalhadamente possivel seu conteudo: "
 idioma = 'pt'
 
 
@@ -103,7 +103,7 @@ def criaHtml(texto, video_id):
         </style>
     </head>
     <body>
-        <h1>GazsTao YouTubeResumer</h1>
+        <h1>GazsTao YouTube Resumer - {video_id}</h1>
         <pre>{texto}</pre>
     </body>
     </html>
