@@ -7,7 +7,7 @@ import os           # biblioteca para lidar com arquivos
 
 
 # Ajuste o modelo, se necessário
-modelo = "phi3.5:latest"              # modelo da OLLAMA a ser utilizado
+modelo = "nous-hermes2:latest"              # modelo da OLLAMA a ser utilizado
 # o prompt é capaz de mudar completamente o estilo e a resposta
 prompt = "Você está assistindo a um vídeo no youtube. Respire fundo, e faça um esquema organizado e detalhado do seguinte texto, pontuando os itens principais e descrevendo o mais detalhadamente possivel seu conteudo: "
 idioma = ['pt','en']
@@ -17,22 +17,24 @@ def get_transcript(video_id):
     try:
         transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=idioma)
         transcript_text = " ".join([entry['text'] for entry in transcript])
-        return transcript_text
+
+        # Grava transcricao em arquivo de texto 
+        with open(".\\data\\transcript_"+video_id+".txt","a") as arquivo:
+            arquivo.write(transcript_text)
+            arquivo.write("\n\n----------------------------------------\n\n")
+            return transcript_text
+        
     except Exception as e:
         print(f"Erro ao obter a transcrição na função get_transcript: {e}")
         return None
 
 
 # Obtem um texto e um ID de arquivo para gravar o resultado, e cria um resumo usando o Ollama
-def summarize_with_ollama(text, arquivoID): 
+def summarize_with_ollama(text): 
     try:
         saida = ollama.chat(model=modelo, messages=[{'role':'user','content': prompt+text}])
         json_bonito_saida = json.dumps(saida,indent=4)
         print(json_bonito_saida)
-
-        with open(".\\data\\"+arquivoID+".txt","a") as arquivo:
-            arquivo.write(saida['message']['content'])
-            arquivo.write("\n\n----------------------------------------\n\n")
         return(saida['message']['content'])
 
     except Exception as e:
@@ -46,17 +48,17 @@ def main():
     video_id = url.split("v=")[-1]
 
     transcript = get_transcript(video_id)
+    print("Transcrição: "+transcript)
 
     if transcript:
         print("Transcrição obtida com sucesso...\nAnalisando o resultado. Aguarde...")
         
         # Enviar a transcrição para o Ollama e obter o resumo
-        summary = summarize_with_ollama(filtrar_string(transcript),video_id)
+        summary = summarize_with_ollama(filtrar_string(transcript))
+        print("Resumo: "+summary)
 
        # Criar um arquivo HTML com o resumo
         if summary:
-            print("\nResumo gerado: ")
-            print(summary)
             criaHtml(summary, video_id, url)
         else:
             print("Falha ao gerar o resumo.")
@@ -109,7 +111,7 @@ def criaHtml(texto, video_id, url):
     """
 
     # Nome do arquivo HTML
-    arquivo_html = './data/'+video_id+'.html'
+    arquivo_html = './data/html_resume_'+video_id+'.html'
     print (f"Iniciando criacao do arquivo {arquivo_html}")
 
     # Salvando o arquivo HTML

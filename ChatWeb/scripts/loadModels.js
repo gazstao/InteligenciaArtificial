@@ -1,5 +1,5 @@
 // URL da API
-const url = "http://192.168.0.114:11434/api/tags";
+const url = "http://localhost:11434/api/tags";
 const defaultModel = "phi3.5:latest";
 
 // Função para carregar os modelos e preencher a seleção
