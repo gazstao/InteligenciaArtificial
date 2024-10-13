@@ -7,7 +7,7 @@ import os           # biblioteca para lidar com arquivos
 
 
 # Ajuste o modelo, se necessário
-modelos = ["llama3.2:latest","phi3.5:latest","gemma2:latest"]
+modelos = ["llama3.1:latest","nous-hermes2:latest","gemma2:latest"]
 # o prompt é capaz de mudar completamente o estilo e a resposta
 prompt = "Você está assistindo a um vídeo no youtube. Respire fundo, e faça um esquema organizado e detalhado do seguinte texto, pontuando os itens principais e descrevendo o mais detalhadamente possivel seu conteudo: "
 idioma = ['pt','en']
