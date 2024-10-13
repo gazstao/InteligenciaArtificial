@@ -7,7 +7,7 @@ import os           # biblioteca para lidar com arquivos
 
 
 # Ajuste o modelo, se necessário
-modelo = "nous-hermes2:latest"              # modelo da OLLAMA a ser utilizado
+modelos = ["llama3.2:latest","phi3.5:latest","gemma2:latest"]
 # o prompt é capaz de mudar completamente o estilo e a resposta
 prompt = "Você está assistindo a um vídeo no youtube. Respire fundo, e faça um esquema organizado e detalhado do seguinte texto, pontuando os itens principais e descrevendo o mais detalhadamente possivel seu conteudo: "
 idioma = ['pt','en']
@@ -30,7 +30,7 @@ def get_transcript(video_id):
 
 
 # Obtem um texto e um ID de arquivo para gravar o resultado, e cria um resumo usando o Ollama
-def summarize_with_ollama(text): 
+def summarize_with_ollama(text, modelo): 
     try:
         saida = ollama.chat(model=modelo, messages=[{'role':'user','content': prompt+text}])
         json_bonito_saida = json.dumps(saida,indent=4)
@@ -51,17 +51,20 @@ def main():
     print("Transcrição: "+transcript)
 
     if transcript:
+        texto_transcricao = filtrar_string(transcript)
+        print(texto_transcricao)
         print("Transcrição obtida com sucesso...\nAnalisando o resultado. Aguarde...")
         
-        # Enviar a transcrição para o Ollama e obter o resumo
-        summary = summarize_with_ollama(filtrar_string(transcript))
-        print("Resumo: "+summary)
+        for modelo in modelos:
+            # Enviar a transcrição para o Ollama e obter o resumo
+            summary = summarize_with_ollama(texto_transcricao, modelo)
+            print("Resumo: "+summary)
 
-       # Criar um arquivo HTML com o resumo
-        if summary:
-            criaHtml(summary, video_id, url)
-        else:
-            print("Falha ao gerar o resumo.")
+            # Criar um arquivo HTML com o resumo
+            if summary:
+                criaHtml(modelo, summary, video_id, url)
+            else:
+                print("Falha ao gerar o resumo.")
 
     else:
         print("Não foi possível obter a transcrição.")
@@ -73,14 +76,14 @@ def filtrar_string(texto):
     return texto_filtrado
 
 
-def criaHtml(texto, video_id, url):
+def criaHtml(modelo, texto, video_id, url):
     conteudo_html = f"""
     <!DOCTYPE html>
     <html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>YouTube Resumer</title>
+        <title>YouTube Resumer </title>
         <style>
             body {{
                 font-family: Arial, sans-serif;
@@ -104,14 +107,15 @@ def criaHtml(texto, video_id, url):
         </style>
     </head>
     <body>
-        <h1>YouTube Resumer - <a href="{url}">{url}</a></h1>
+        <h1>GazsTao YouTube Resumer - {modelo}</h1>
+        <p><a href="{url}">{url}</a></p>
         <pre>{texto}</pre>
     </body>
     </html>
     """
 
     # Nome do arquivo HTML
-    arquivo_html = './data/html_resume_'+video_id+'.html'
+    arquivo_html = './data/html_resume_'+modelo+"_"+video_id+'.html'
     print (f"Iniciando criacao do arquivo {arquivo_html}")
 
     # Salvando o arquivo HTML
